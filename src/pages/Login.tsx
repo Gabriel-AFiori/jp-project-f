@@ -2,13 +2,16 @@ import { useState } from "react";
 import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../services/firebaseConfig";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = async () => {
+  // Alterar para após o Auth ele realizar o redirecionamento da page para o dashboard ou home dependendo do app (atualmente generico para entender o comportamento do firebase)
+  const handleLogin = async (event: React.FormEvent) => {
+    event.preventDefault();
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -28,6 +31,7 @@ function Login() {
     }
   };
 
+  // Alterar para após o Auth ele realizar o redirecionamento da page para o dashboard ou home dependendo do app (atualmente generico para entender o comportamento do firebase)
   const handleGoogleLogin = async () => {
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
@@ -46,6 +50,7 @@ function Login() {
 
   return (
     <div>
+      {/* Faz sentido existir um header aqui? Ele sera compartilhado com outras pages? Possivel componentização */}
       {/* <Header /> */}
       <h2>Login</h2>
       {error && <p>{error}</p>}
@@ -75,8 +80,11 @@ function Login() {
       <button type="button" onClick={handleGoogleLogin}>
         Login with Google
       </button>
-
-      <button type="button"> Sign Up </button>
+      
+      {/* Pensar em utilizar um Navigate... (é uma possibilidade) */}
+      <Link to="/signup">
+        <button type="button"> Sign Up </button>
+      </Link>
     </div>
   );
 }
