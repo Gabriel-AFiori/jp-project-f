@@ -2,14 +2,16 @@ import { useState } from "react";
 import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../services/firebaseConfig";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  // Alterar para após o Auth ele realizar o redirecionamento da page para o dashboard ou home dependendo do app (atualmente generico para entender o comportamento do firebase)
+  const navigate = useNavigate();
+
+  // Alterar o catch para tratar o erro de forma mais amigavel
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
@@ -19,6 +21,9 @@ function Login() {
         password
       );
       console.log(userCredential.user);
+
+      // Userid dando problema, possivel local de erro (Sera o navigate?)
+      navigate("/home"); // Redireciona para a página home após o login (Alterar caso necessario o path)
     } catch (error: unknown) {
       if (error instanceof FirebaseError) {
         console.error(error.code);
@@ -31,11 +36,14 @@ function Login() {
     }
   };
 
-  // Alterar para após o Auth ele realizar o redirecionamento da page para o dashboard ou home dependendo do app (atualmente generico para entender o comportamento do firebase)
+  // Alterar o catch para tratar o erro de forma mais amigavel
   const handleGoogleLogin = async () => {
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
       console.log(userCredential.user);
+
+      // Userid dando problema, possivel local de erro (Sera o navigate?)
+      navigate("/home"); // Redireciona para a página home após o login (Alterar caso necessario o path)
     } catch (error: unknown) {
       if (error instanceof FirebaseError) {
         console.error(error.code);
