@@ -8,6 +8,7 @@ export const useFileUpload = () => {
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [userId, setUserId] = useState<string>("");
 
+  // Talvez componentizar os estadis globais em um useContext
   useEffect(() => {
     const user = auth.currentUser;
     if (user) {
