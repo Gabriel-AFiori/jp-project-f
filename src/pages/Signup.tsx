@@ -3,7 +3,7 @@ import { signupWithEmailandPassword } from "../services/fireService"; // Serviç
 import { FirebaseError } from "firebase/app";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Form from "../components/Form"; // Componente de formulário
+import Form from "../components/formComponent"; // Componente de formulário
 
 function Signup() {
   const [email, setEmail] = useState("");

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { loginWithEmail, loginWithGoogle } from "../services/fireService";
 import { useNavigate, Link } from "react-router-dom";
-import Form from "../components/Form";
+import Form from "../components/formComponent";
 
 function Login() {
   const [email, setEmail] = useState("");
