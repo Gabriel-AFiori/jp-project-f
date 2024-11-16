@@ -1,113 +1,50 @@
 import { useState } from "react";
-import { FirebaseError } from "firebase/app";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "../services/firebaseConfig";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { loginWithEmail, loginWithGoogle } from "../services/fireService";
+import { useNavigate, Link } from "react-router-dom";
+import Form from "../components/Form";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
   const navigate = useNavigate();
 
-  // Alterar o catch para tratar o erro de forma mais amigavel
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      console.log(userCredential.user);
-
-      // Userid dando problema, possivel local de erro (Sera o navigate?)
-      navigate("/home"); // Redireciona para a página home após o login (Alterar caso necessario o path)
-    } catch (error: unknown) {
-      if (error instanceof FirebaseError) {
-        console.error(error.code);
-        console.error(error.message);
-        setError(error.message);
-      } else {
-        console.error("Unexpected error", error);
-        setError("An unexpected error occurred.");
-      }
+      await loginWithEmail(email, password);
+      navigate("/home");
+    } catch (error) {
+      setError("Login failed. Please try again.");
+      console.error(error);
     }
   };
 
-  // Alterar o catch para tratar o erro de forma mais amigavel
   const handleGoogleLogin = async () => {
     try {
-      const userCredential = await signInWithPopup(auth, googleProvider);
-      const user = userCredential.user;
-
-      // Agora o login via google tambem registra o usuario no db
-      // Problema de duplicidade ('-')
-      const response = await axios.post('http://localhost:3001/user', {
-        userId: user.uid,
-        email: user.email,
-      });
-
-      if (response.status === 200) {
-        // console.log('User created or already exists');
-      } else {
-        console.error('Error creating user:', response.data);
-      }
-      // console.log(response.data);
-      // console.log(userCredential.user);
-
-      // Userid dando problema, possivel local de erro (Sera o navigate?)
-      navigate("/home"); // Redireciona para a página home após o login (Alterar caso necessario o path)
-    } catch (error: unknown) {
-      if (error instanceof FirebaseError) {
-        console.error(error.code);
-        console.error(error.message);
-        setError(error.message);
-      } else {
-        console.error("Unexpected error", error);
-        setError("An unexpected error occurred.");
-      }
+      await loginWithGoogle();
+      navigate("/home");
+    } catch (error) {
+      setError("Google Login failed.");
+      console.error(error);
     }
   };
 
   return (
     <div>
-      {/* Faz sentido existir um header aqui? Ele sera compartilhado com outras pages? Possivel componentização */}
-      {/* <Header /> */}
       <h2>Login</h2>
-      {error && <p>{error}</p>}
-
-      <form onSubmit={handleLogin}>
-        <label>
-          Email:
-          <input
-            type="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </label>
-        <label>
-          Password:
-          <input
-            type="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-        <button type="submit">Login</button>
-      </form>
-
-      <button type="button" onClick={handleGoogleLogin}>
-        Login with Google
-      </button>
-      
-      {/* Pensar em utilizar um Navigate... (é uma possibilidade) */}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <Form
+        fields={[
+          { name: "Email", type: "email", value: email, onChange: (e) => setEmail(e.target.value) },
+          { name: "Password", type: "password", value: password, onChange: (e) => setPassword(e.target.value) },
+        ]}
+        onSubmit={handleLogin}
+        buttonText="Login"
+      />
+      <button onClick={handleGoogleLogin}>Login with Google</button>
       <Link to="/signup">
-        <button type="button"> Sign Up </button>
+        <button type="button">Sign Up</button>
       </Link>
     </div>
   );
