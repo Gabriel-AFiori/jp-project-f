@@ -12,12 +12,16 @@ function UploadFile() {
     const user = auth.currentUser;
     if (user) {
       setUserId(user.uid);
+    } else {
+      setError("User not logged in");
     }
   }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files ? e.target.files[0] : null;
     setFile(selectedFile);
+    setError("");
+    setSuccessMessage("");
   };
 
   const handleUpload = async () => {
@@ -44,11 +48,26 @@ function UploadFile() {
       });
 
       setSuccessMessage(response.data.message);
+      
+      const fileId = response.data.file.id;
+      if (file.type.startsWith('audio/')) {
+        await trascribeAudio(fileId);
+      }
     } catch (error) {
       console.error(error);
       setError('Failed to upload file');
     }
   };
+
+  const trascribeAudio = async (fileId: number) => {
+    try {
+      const response = await axios.post('http://localhost:3001/upload/transcribe', { fileId });
+      setSuccessMessage(`File uploaded successfully! Transcription: ${response.data.transcription}`);
+    } catch (error) {
+      console.error(error);
+      setError('Failed to transcribe audio');
+    }
+  }
 
   return (
     <div>

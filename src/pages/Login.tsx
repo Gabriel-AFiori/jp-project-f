@@ -3,6 +3,7 @@ import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../services/firebaseConfig";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -40,7 +41,22 @@ function Login() {
   const handleGoogleLogin = async () => {
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
-      console.log(userCredential.user);
+      const user = userCredential.user;
+
+      // Agora o login via google tambem registra o usuario no db
+      // Problema de duplicidade ('-')
+      const response = await axios.post('http://localhost:3001/user', {
+        userId: user.uid,
+        email: user.email,
+      });
+
+      if (response.status === 200) {
+        // console.log('User created or already exists');
+      } else {
+        console.error('Error creating user:', response.data);
+      }
+      // console.log(response.data);
+      // console.log(userCredential.user);
 
       // Userid dando problema, possivel local de erro (Sera o navigate?)
       navigate("/home"); // Redireciona para a página home após o login (Alterar caso necessario o path)

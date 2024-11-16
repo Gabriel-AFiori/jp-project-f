@@ -2,17 +2,28 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../services/firebaseConfig";
 import { FirebaseError } from "firebase/app";
+import axios from "axios";
 
 function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  
+
+  // Alterar o catch para tratar o erro de forma mais amigavel
   // Alterar para após o Auth ele realizar o redirecionamento da page para o dashboard ou home dependendo do app (atualmente generico para entender o comportamento do firebase)
   const handleSignup = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Agora o register local registra o usuario no db
+      const response = await axios.post('http://localhost:3001/user', {
+        userId: user.uid,
+        email: user.email,
+      });
+      
+      console.log(response.data);
       console.log(userCredential.user);
     } catch (error: unknown) {
       if (error instanceof FirebaseError) {

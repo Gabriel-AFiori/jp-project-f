@@ -1,4 +1,4 @@
-import UploadFile from "../components/uploadComponent";
+import UploadFile from "../components/fileUploadComponent";
 
 function Home () {
   return (
