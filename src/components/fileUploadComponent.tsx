@@ -5,10 +5,10 @@ const FileUpload = () => {
   const { error, successMessage, handleFileChange, handleUpload } = useFileUpload();
 
   return (
-    <div>
+    <div className="upload-section">
       <h2>Upload File</h2>
-      {error && <ErrorMessage message={error} />}
-      {successMessage && <SuccessMessage message={successMessage} />}
+      {error && <div className="message error"><ErrorMessage message={error} /></div>}
+      {successMessage && <div className="message success"><SuccessMessage message={successMessage} /></div>}
       
       <input type="file" onChange={handleFileChange} />
       <button onClick={handleUpload}>Upload</button>

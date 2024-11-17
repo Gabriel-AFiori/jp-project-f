@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { signupWithEmailandPassword } from "../services/fireService"; // Serviço de autenticação
+import { signupWithEmailandPassword } from "../../services/fireService";
 import { FirebaseError } from "firebase/app";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Form from "../components/formComponent"; // Componente de formulário
+import Form from "../../components/formComponent";
+import { Link } from "react-router-dom";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -11,14 +12,12 @@ function Signup() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Função para tratar o signup
   const handleSignup = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
       const userCredential = await signupWithEmailandPassword(email, password);
       const user = userCredential.user;
 
-      // Registra o usuário no banco de dados
       const response = await axios.post("http://localhost:3001/user", {
         userId: user.uid,
         email: user.email,
@@ -44,10 +43,13 @@ function Signup() {
   ];
 
   return (
-    <div>
+    <div className="signup-container">
       <h2>Signup</h2>
       {error && <p>{error}</p>}
       <Form fields={fields} onSubmit={handleSignup} buttonText="Signup" />
+      <Link to="/">
+        <button type="button">Login</button>
+      </Link>
     </div>
   );
 }
