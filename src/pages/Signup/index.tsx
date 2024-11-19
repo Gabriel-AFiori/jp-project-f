@@ -18,7 +18,7 @@ function Signup() {
       const userCredential = await signupWithEmailandPassword(email, password);
       const user = userCredential.user;
 
-      const response = await axios.post("http://localhost:3001/user", {
+      const response = await axios.post("https://jp-project-b.vercel.app/user", {
         userId: user.uid,
         email: user.email,
       });

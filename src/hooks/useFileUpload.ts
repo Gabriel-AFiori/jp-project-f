@@ -45,7 +45,7 @@ export const useFileUpload = () => {
     formData.append('userId', userId);
 
     try {
-      const response = await axios.post('http://localhost:3001/upload', formData, {
+      const response = await axios.post('https://jp-project-b.vercel.app/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -65,7 +65,7 @@ export const useFileUpload = () => {
 
   const transcribeAudio = async (fileId: number) => {
     try {
-      const response = await axios.post('http://localhost:3001/upload/transcribe', { fileId });
+      const response = await axios.post('https://jp-project-b.vercel.app/upload/transcribe', { fileId });
       setSuccessMessage(`Teste transcription: ${response.data.transcription}`);
       setTimeout(() => {
         setSuccessMessage('');
