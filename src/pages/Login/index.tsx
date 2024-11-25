@@ -29,7 +29,7 @@ function Login() {
     try{
       const userCredential = await signInWithPopup(auth, googleProvider);
       const user = userCredential.user
-      const response = await axios.post('https://jp-project-b.vercel.app/user', {
+      const response = await axios.post('https://jp-project-b-production.up.railway.app/user', {
         userId: user.uid,
         email: user.email,
       });
