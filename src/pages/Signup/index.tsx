@@ -18,7 +18,7 @@ function Signup() {
       const userCredential = await signupWithEmailandPassword(email, password);
       const user = userCredential.user;
 
-      const response = await axios.post("https://jp-project-b-production.up.railway.app/user", {
+      const response = await axios.post("https://jp-project-back-production.up.railway.app/user", {
         userId: user.uid,
         email: user.email,
       });

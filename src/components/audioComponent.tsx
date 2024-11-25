@@ -17,7 +17,6 @@ const AudioComponent = () => {
     <div className="upload-section">
       <h2>Speech to Text</h2>
       {error && <div className="message error"><ErrorMessage message={error} /></div>}
-      {successMessage && <div className="message success"><SuccessMessage message={successMessage} /></div>}
       {uploadStatus && <p>{uploadStatus}</p>}
 
       <button onClick={startRecording} disabled={isRecording}>
@@ -31,12 +30,15 @@ const AudioComponent = () => {
         </svg>
       </button>
 
-      <h3>Teste de Audio:</h3>
-      {audioUrl && (
-        <div>
-          <audio controls src={audioUrl}></audio>
+      {!isRecording && audioUrl && (
+        <div> 
+          <h3>Teste de Audio:</h3>
+          <div>
+            <audio controls src={audioUrl}></audio>
+          </div>
         </div>
       )}
+      {successMessage && <div className="message success"><SuccessMessage message={successMessage} /></div>}
     </div>
   );
 };
