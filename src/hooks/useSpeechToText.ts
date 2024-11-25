@@ -23,7 +23,7 @@ export const useSpeechToText = () => {
     if (user) {
       setUserId(user.uid);
     } else {
-      setError("User not logged in");
+      setError("Usuário não logado");
       navigate('/');
     }
   }, [navigate]);
@@ -50,18 +50,18 @@ export const useSpeechToText = () => {
       setIsRecording(true);
     } catch (error) {
       console.error('Error recording audio:', error);
-      setError('Failed to record audio');
+      setError('Falha ao gravar áudio');
     }
   };
 
   const uploadAudio = async () => {
     if (!audioBlobRef.current) {
-      setError("No audio to upload.");
+      setError("Nenhum áudio para fazer upload");
       return;
     }
     
     if (!userId) {
-      setError("You must be logged in to upload a file.");
+      setError("Você precisa estar logado para fazer upload de arquivos");
       return;
     }
     
@@ -78,7 +78,7 @@ export const useSpeechToText = () => {
         },
       });
       
-      setUploadStatus('Upload successful!');
+      setUploadStatus('Upload successful');
       
       const fileId = response.data.file.id;
       
@@ -97,21 +97,23 @@ export const useSpeechToText = () => {
       if (audioBlobRef.current) {
         uploadAudio();
       } else {
-        setError("No audio to upload.");
+        setError("Nenhum áudio para fazer upload");
       }
     }, 1000);
   };
   
   const transcribeAudio = async (fileId: number) => {
     try {
+      setSuccessMessage('Transcrevendo áudio...');
       const response = await axios.post('https://jp-project-back-production.up.railway.app/upload/transcribe', { fileId });
-      setSuccessMessage(`Teste Transcription: ${response.data.transcription}`);
+
+      setSuccessMessage(`Transcrição: ${response.data.transcription}`);
       setTimeout(() => {
         setSuccessMessage('');
       }, 10000)
     } catch (error) {
       console.error(error);
-      setError('Failed to transcribe audio');
+      setError('Falha para transcrever áudio');
     }
   };
   

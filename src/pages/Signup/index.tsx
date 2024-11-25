@@ -26,10 +26,8 @@ function Signup() {
       navigate("/");
       console.log(response.data);
     } catch (error: unknown) {
-      if (error instanceof FirebaseError) {
-        console.error(error.code);
-        console.error(error.message);
-        setError(error.message);
+      if (error instanceof FirebaseError && error.code === "auth/email-already-in-use") {
+        setError("Email already in use.");
       } else {
         console.error("Unexpected error", error);
         setError("An unexpected error occurred.");
@@ -48,7 +46,7 @@ function Signup() {
       {error && <p>{error}</p>}
       <Form fields={fields} onSubmit={handleSignup} buttonText="Signup" />
       <Link to="/">
-        <button type="button">Login</button>
+        <button type="button">Return to Login</button>
       </Link>
     </div>
   );

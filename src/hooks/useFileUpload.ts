@@ -17,7 +17,7 @@ export const useFileUpload = () => {
     if (user) {
       setUserId(user.uid);
     } else {
-      setError("User not logged in");
+      setError("Usuário não logado");
       navigate('/');
     }
   }, [navigate]);
@@ -31,12 +31,12 @@ export const useFileUpload = () => {
 
   const handleUpload = async () => {
     if (!file) {
-      setError("Please select a file first.");
+      setError("Por favor, selecione um arquivo para fazer upload.");
       return;
     }
 
     if (!userId) {
-      setError("You must be logged in to upload a file.");
+      setError("Você precisa estar logado para fazer upload de arquivos.");
       return;
     }
 
@@ -59,20 +59,21 @@ export const useFileUpload = () => {
       }
     } catch (error) {
       console.error(error);
-      setError('Failed to upload file');
+      setError('Falha ao fazer upload do arquivo');
     }
   };
 
   const transcribeAudio = async (fileId: number) => {
     try {
+      setSuccessMessage('Transcrevendo áudio...');
       const response = await axios.post('https://jp-project-back-production.up.railway.app/upload/transcribe', { fileId });
-      setSuccessMessage(`Teste transcription: ${response.data.transcription}`);
+      setSuccessMessage(`Transcrição: ${response.data.transcription}`);
       setTimeout(() => {
         setSuccessMessage('');
       }, 10000);
     } catch (error) {
       console.error(error);
-      setError('Failed to transcribe audio');
+      setError('Falha ao transcrever áudio');
     }
   };
 

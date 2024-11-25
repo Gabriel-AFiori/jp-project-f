@@ -20,8 +20,8 @@ function Login() {
       await loginWithEmail(email, password);
       navigate("/home");
     } catch (error) {
-      setError("Login failed. Please try again.");
-      console.error(error);
+      console.log(error);
+      setError("Email ou senha inválidos");
     }
   };
 
@@ -37,13 +37,13 @@ function Login() {
       if (response.status === 200) {
         navigate("/home");
       } else {
-        setError("Google Login failed.");
+        setError("Falha no login com Google");
       }
     } catch (error) {
       if (error instanceof FirebaseError) {
         setError(error.message);
       } else {
-        setError("Google Login failed.");
+        setError("Falha no login com Google");
       }
     }
   };
