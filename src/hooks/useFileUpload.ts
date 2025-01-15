@@ -52,28 +52,9 @@ export const useFileUpload = () => {
       });
 
       setSuccessMessage(response.data.message);
-
-      const fileId = response.data.file.id;
-      if (file.type.startsWith('audio/')) {
-        await transcribeAudio(fileId);
-      }
     } catch (error) {
       console.error(error);
       setError('Falha ao fazer upload do arquivo');
-    }
-  };
-
-  const transcribeAudio = async (fileId: number) => {
-    try {
-      setSuccessMessage('Transcrevendo áudio...');
-      const response = await axios.post('https://jp-project-back-production.up.railway.app/upload/transcribe', { fileId });
-      setSuccessMessage(`Transcrição: ${response.data.transcription}`);
-      setTimeout(() => {
-        setSuccessMessage('');
-      }, 10000);
-    } catch (error) {
-      console.error(error);
-      setError('Falha ao transcrever áudio');
     }
   };
 

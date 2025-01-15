@@ -1,5 +1,5 @@
 import { useFileUpload } from '../hooks/useFileUpload';
-import { ErrorMessage, SuccessMessage } from './messageComponent'
+import { Message } from './messageComponent'
 
 const FileUpload = () => {
   const { error, successMessage, handleFileChange, handleUpload } = useFileUpload();
@@ -7,8 +7,8 @@ const FileUpload = () => {
   return (
     <div className="upload-section">
       <h2>Upload File</h2>
-      {error && <div className="message error"><ErrorMessage message={error} /></div>}
-      {successMessage && <div className="message success"><SuccessMessage message={successMessage} /></div>}
+      { error && <Message message={error} type='error' /> }
+      { successMessage && <Message message={successMessage} type='success' /> }
       
       <input type="file" onChange={handleFileChange} />
       <button onClick={handleUpload}>Upload</button>
