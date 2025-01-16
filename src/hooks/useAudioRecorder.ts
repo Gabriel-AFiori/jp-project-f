@@ -57,9 +57,9 @@ const useAudioRecorder = (): UseAudioRecorderReturn => {
     }
 
     const formData = new FormData();
-    formData.append('audio', audioBlob, 'audio.wav');
+    formData.append('file', audioBlob, 'audio.wav');
     formData.append('userId', user.uid);
-    fetch('https://jp-project-back-production.up.railway.app/upload/transcribe', { // Aqui você precisa apontar para seu endpoint backend
+    fetch('https://jp-project-back-production.up.railway.app/upload/transcribe', {
       method: 'POST',
       body: formData,
     })

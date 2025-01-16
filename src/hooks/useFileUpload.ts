@@ -45,13 +45,22 @@ export const useFileUpload = () => {
     formData.append('userId', userId);
 
     try {
-      const response = await axios.post('https://jp-project-back-production.up.railway.app/upload', formData, {
+      const endpoint = file.type.startsWith('audio') || file.type.startsWith('video')
+        ? 'https://jp-project-back-production.up.railway.app/upload/transcribe'
+        : 'https://jp-project-back-production.up.railway.app/upload';
+
+      const response = await axios.post(endpoint, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
-      setSuccessMessage(response.data.message);
+      if (file.type.startsWith('audio') || file.type.startsWith('video')) {
+        console.log('Transcription:', response.data);
+        setSuccessMessage("Arquivo de áudio/vídeo enviado e transcrição realizada com sucesso.");
+      } else {
+        setSuccessMessage(response.data.message);
+      }
     } catch (error) {
       console.error(error);
       setError('Falha ao fazer upload do arquivo');
