@@ -59,7 +59,7 @@ const useAudioRecorder = (): UseAudioRecorderReturn => {
     const formData = new FormData();
     formData.append('file', audioBlob, 'audio.wav');
     formData.append('userId', user.uid);
-    fetch('https://jp-project-back-production.up.railway.app/upload/transcribe', {
+    fetch('http://localhost:3000/upload/transcribe', { //Lembrar de voltar para o endereço do Railway
       method: 'POST',
       body: formData,
     })

@@ -46,8 +46,8 @@ export const useFileUpload = () => {
 
     try {
       const endpoint = file.type.startsWith('audio') || file.type.startsWith('video')
-        ? 'https://jp-project-back-production.up.railway.app/upload/transcribe'
-        : 'https://jp-project-back-production.up.railway.app/upload';
+        ? 'http://localhost:3000/upload/transcribe' //Lembrar de voltar para o endereço do Railway
+        : 'http://localhost:3000/upload'; //Lembrar de voltar para o endereço do Railway
 
       const response = await axios.post(endpoint, formData, {
         headers: {
