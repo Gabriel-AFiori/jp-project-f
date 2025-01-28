@@ -29,7 +29,7 @@ function Login() {
     try{
       const userCredential = await signInWithPopup(auth, googleProvider);
       const user = userCredential.user
-      const response = await axios.post('http://localhost:3000/user', { //Lembrar de voltar para o endereço do Railway
+      const response = await axios.post('https://jp-project-back-production.up.railway.app/user', { //Lembrar de voltar para o endereço do Railway
         userId: user.uid,
         email: user.email,
       });

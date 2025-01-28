@@ -1,11 +1,32 @@
 import useAudioRecorder from '../hooks/useAudioRecorder';
+import { Message } from './messageComponent'
 
 const AudioComponent = () => {
-  const { isRecording, startRecording, stopRecording, audioUrl } = useAudioRecorder();
+  const { 
+    isRecording,
+    audioUrl,
+    fileName,
+    loading,
+    successMessage,
+    startRecording,
+    stopRecording,
+    handleFileNameChange
+  } = useAudioRecorder();
 
   return (
     <div className="upload-section">
       <h2>Speech to Text</h2>
+      
+      {loading && <p>Carregando...</p>}
+      { successMessage && <Message message={successMessage} type='success' /> }
+
+      <input 
+        type="text"
+        placeholder='Digite o nome do arquivo de áudio'
+        onChange={handleFileNameChange}
+        disabled={isRecording}
+        value={fileName}
+      />
       <button 
         onClick={isRecording ? stopRecording : startRecording}
         className={isRecording ? 'recording' : ''}

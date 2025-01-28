@@ -6,7 +6,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   color: #333;
 }
 
@@ -15,9 +14,12 @@ body {
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
+  max-width: 1200px;
   width: 100%;
   text-align: center;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-gap: 20px;
 }
 
 h1 {
@@ -43,23 +45,14 @@ button {
   transition: background-color 0.3s ease;
 }
 
-/* button:disabled {
-  background-color: #bbb;
-  cursor: not-allowed;
-} */
+button:hover {
+  background-color: #357ab7;
+}
 
 button.recording {
   background-color: #e74c3c;
   box-shadow: 0 0 10px #e74c3c;
   animation: pulse 1s infinite;
-}
-
-button:hover {
-  background-color: #357ab7;
-}
-
-.upload-section {
-  margin-top: 2rem;
 }
 
 .upload-section input {
@@ -81,17 +74,70 @@ audio {
   border-radius: 4px;
 }
 
-.error {
+.message.error {
   background-color: #f8d7da;
   color: #721c24;
 }
 
-.success {
+.message.success {
   background-color: #d4edda;
   color: #155724;
 }
 
-ul {
-  list-style-type: none;
-  padding-left: 0;
+.list-container {
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.list-section ul {
+  list-style: none;
+  padding: 0;
+  border: 1px solid gray;
+  border-radius: 4px;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.list-section li button {
+  background-color: white;
+  color: gray;
+  border-bottom: 2px solid #333;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-align: start;
+}
+
+.list-section li button:hover {
+  background-color: #f0f0f0;
+  color: black;
+}
+
+.list-section-header button img {
+  width: 23px;
+  height: 23px;
+  transition: filter 0.3s;
+}
+
+.upload-audio-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  padding: 20px;
+}
+
+.transcription-container {
+  grid-column: 1 / span 2;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.transcription-container p {
+  margin-top: 2rem;
+  text-align: start;
 }

@@ -1,8 +1,20 @@
 import { useListFiles } from "../hooks/useListFiles";
+import refreshSVG from "../assets/refresh-svgrepo-com.svg";
 
-const ListComponent = () => {
-  const { files, loading, error } = useListFiles();
+interface singleFile {
+  id: number;
+  filename: string;
+  filetype: string;
+  transcription: string;
+}
 
+interface ListComponentProps {
+  onFileSelect: (file: singleFile | null) => void;
+}
+
+const ListComponent = ({ onFileSelect }: ListComponentProps) => {
+  const { files, loading, error, fetchFiles } = useListFiles();
+  
   if (loading) {
     return <p>Carregando arquivos...</p>;
   }
@@ -16,12 +28,19 @@ const ListComponent = () => {
   }
 
   return (
-    <div>
-      <h3>Lista de Arquivos</h3>
+    <div className="list-section">
+      <div className="list-section-header">
+        <h2>Lista de Arquivos</h2>
+        <button onClick={fetchFiles}>
+          <img src={refreshSVG} alt="Atualizar"/>
+        </button>
+      </div>
       <ul>
         {files.map((file) => (
           <li key={file.id}>
-            <button>{file.filename} - {file.filetype}</button>
+            <button onClick={ () => onFileSelect(file)}>
+              {file.filename} -- {file.filetype}
+            </button>
           </li>
         ))}
       </ul>
